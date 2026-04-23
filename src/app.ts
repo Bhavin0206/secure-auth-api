@@ -1,4 +1,6 @@
 import express, { Application, Request, Response } from "express";
+import authRoutes from "./routes/auth.routes";
+import errorHandler from "./middleware/error.middleware";
 
 const app: Application = express();
 
@@ -10,5 +12,10 @@ app.get("/", (req: Request, res: Response) => {
     message: "Secure Auth API is running",
   });
 });
+
+app.use("/api/auth", authRoutes);
+
+// keep this LAST
+app.use(errorHandler);
 
 export default app;

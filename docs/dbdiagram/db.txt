@@ -1,0 +1,16 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  _id string [pk, note: "MongoDB ObjectId"]
+  name string [not null, note: "User full name"]
+  email string [not null, unique, note: "User email address"]
+  password string [not null, note: "Store hashed password only"]
+  role string [not null, default: "user", note: "Allowed values: user, admin"]
+  refreshToken string [default: null, note: "Used for refresh token flow"]
+  createdAt datetime [not null, note: "Document creation time"]
+  updatedAt datetime [not null, note: "Last update time"]
+}
+
+
+
