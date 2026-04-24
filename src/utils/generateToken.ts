@@ -3,6 +3,7 @@ import jwt, { SignOptions } from "jsonwebtoken";
 interface TokenPayload {
   id: string;
   role: number;
+  tokenVersion: number;
 }
 
 const accessTokenExpiresIn: SignOptions["expiresIn"] =

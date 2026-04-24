@@ -1,5 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import authRoutes from "./routes/auth.routes";
+import adminRoutes from "./routes/admin.routes";
+
 import errorHandler from "./middleware/error.middleware";
 
 const app: Application = express();
@@ -14,6 +16,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 // keep this LAST
 app.use(errorHandler);
