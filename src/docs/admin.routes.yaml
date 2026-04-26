@@ -11,3 +11,35 @@
           description: Unauthorized or invalid access token
         403:
           description: Forbidden - admin role required
+
+  /api/admin/change-password:
+    post:
+      summary: Change admin password
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                  example: "123456"
+                newPassword:
+                  type: string
+                  example: "new123456"
+      responses:
+        200:
+          description: Password changed successfully. Please login again.
+        400:
+          description: Validation error or old password is incorrect
+        401:
+          description: Unauthorized or invalid access token
+        403:
+          description: Forbidden - admin role required
