@@ -4,12 +4,14 @@ import { authMiddleware } from "../middleware/auth.middleware";
 import { roleMiddleware } from "../middleware/role.middleware";
 import { getMe } from "../controllers/admin/admin.controller";
 import { changePassword } from "../controllers/auth/changePassword.controller";
+import { changePasswordValidator } from "../validators/auth.validator";
+import validateRequest from "../middleware/validate.middleware";
 
 const router = Router();
 
 
 router.get("/me", authMiddleware, roleMiddleware(1), getMe);
-router.post("/change-password", authMiddleware, roleMiddleware(1), changePassword);
+router.post("/change-password", authMiddleware, changePasswordValidator, validateRequest, changePassword);
 
 
 export default router;

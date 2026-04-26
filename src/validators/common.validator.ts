@@ -17,10 +17,10 @@ export const emailValidation = () =>
     .withMessage("Please provide a valid email")
     .normalizeEmail();
 
-export const passwordValidation = () =>
-  body("password")
+export const passwordValidation = (field = "password", label = "Password") =>
+  body(field)
     .trim()
     .notEmpty()
-    .withMessage("Password is required")
+    .withMessage(`${label} is required`)
     .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long");
+    .withMessage(`${label} must be at least 6 characters long`);
