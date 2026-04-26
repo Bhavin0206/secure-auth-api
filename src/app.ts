@@ -1,8 +1,9 @@
 import express, { Application, Request, Response } from "express";
 import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
-
 import errorHandler from "./middleware/error.middleware";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
 
 const app: Application = express();
 
@@ -17,6 +18,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
 
 
 // keep this LAST
