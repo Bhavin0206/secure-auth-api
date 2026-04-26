@@ -1,4 +1,7 @@
 import express, { Application, Request, Response } from "express";
+import cors from "cors";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
 import errorHandler from "./middleware/error.middleware";
@@ -6,8 +9,19 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
 
 const app: Application = express();
+app.use(helmet());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    // methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 app.use(express.json());
+
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({

@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { registerUserService } from "../../services/auth/register.service";
 import { loginUserService, logoutUserService, refreshTokenService } from "../../services/auth/login.service";
 import AppError from "../../utils/AppError";
+import { refreshTokenCookieOptions } from "../../utils/cookieOptions";
+
 
 export const login = async (
     req: Request,
@@ -11,17 +13,25 @@ export const login = async (
     try {
         const result = await loginUserService(req.body);
 
+        res.cookie(
+            "refreshToken",
+            result.refreshToken,
+            refreshTokenCookieOptions
+        );
+
         res.status(200).json({
             success: true,
             message: "Login successful",
-            data: result,
+            data: {
+                user: result.user,
+                accessToken: result.accessToken,
+            },
             errors: null,
         });
-
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const refreshToken = async (
     req: Request,
@@ -29,9 +39,9 @@ export const refreshToken = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const { refreshToken } = req.body;
+        const incomingRefreshToken = req.cookies?.refreshToken;
 
-        const result = await refreshTokenService(refreshToken);
+        const result = await refreshTokenService(incomingRefreshToken);
 
         res.status(200).json({
             success: true,
@@ -50,9 +60,11 @@ export const logout = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const { refreshToken } = req.body;
+        const incomingRefreshToken = req.cookies?.refreshToken;
 
-        await logoutUserService(refreshToken);
+        await logoutUserService(incomingRefreshToken);
+
+        res.clearCookie("refreshToken", refreshTokenCookieOptions);
 
         res.status(200).json({
             success: true,
