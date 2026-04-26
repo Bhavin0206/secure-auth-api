@@ -28,3 +28,10 @@ if (process.env.NODE_ENV !== "production") {
 app.use(errorHandler);
 
 export default app;
+
+// rate limiting
+// Helmet
+// strict CORS
+// login attempt protection
+// audit logs
+// tests
